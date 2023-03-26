@@ -46,7 +46,7 @@ class SGDisplay:
         while self.update is True:
             print("Display aktualisiert")
             self._display()
-            sleep(1)
+            sleep(5)
 
 
     def _display(self):

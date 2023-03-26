@@ -80,7 +80,5 @@ class SGRelay:
         self.SG_relay2_state = True
         GPIO.output(self.SG_relay2_pin, False)
 
-if __name__ == "__main__":
-    relay = SGRelay()
-    relay.set_SG_status(3)
-    GPIO.cleanup()
+    def cleanup(self):
+        GPIO.clenup()
