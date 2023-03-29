@@ -34,6 +34,7 @@ relay = SGRelay()
 sg_state = 2
 
 def main():
+    global sg_state
     # collect data from E3DC
     try:
         pv = e3dc.get_photovoltaic_power()
@@ -42,9 +43,11 @@ def main():
         grid = e3dc.get_grid_transfer_power()
         soc = e3dc.get_battery_soc()
     except TypeError:
-        print("ERROR: E3DC not working")
+        print("ERROR: E3DC no connection")
         close()
 
+    # If currently SG_status is 2 (normal operation),
+    #  then check if SG_status should be changed to 3
     if sg_state == 2:
         # calculate sg state
         sg_state = 3
@@ -58,15 +61,18 @@ def main():
         if grid >= -1000:
             sg_state = 2
     
-    # If currently SG_status is 3, then check if this should be switched off.
+    # If currently SG_status is 3, 
+    # then check if SG_status should be changed to 2.
     elif sg_state == 3:
         sg_state = 2
 
-        # Check if 
+        # battery discard above 50 watts
         if bat >= -50:
             sg_state = 3
+        # state of charge below 95%
         if soc >= 95:
             sg_state = 3
+        # power from grid above 200 watts
         if grid <= 200:
             sg_state = 3
     

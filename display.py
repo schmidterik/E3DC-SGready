@@ -49,7 +49,6 @@ class SGDisplay:
 
     def update_display(self):
         while self.update is True:
-            print("Display aktualisiert")
             try:
                 self._display()
             except DeviceNotFoundError:
