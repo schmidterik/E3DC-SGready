@@ -4,6 +4,7 @@ from time import sleep
 from luma.core.interface.serial import i2c
 from luma.oled.device import sh1106
 from luma.core.render import canvas
+from luma.core.error import DeviceNotFoundError
 from PIL import ImageFont
 
 class SGDisplay:
@@ -17,7 +18,11 @@ class SGDisplay:
         self.sg_status = None
 
         serial = i2c(port=1, address=0x3C)
-        self.device = sh1106(serial)
+        try:
+            self.device = sh1106(serial)
+        except DeviceNotFoundError:
+            print("I2C display not found")
+            raise
     
     def update_grid_power(self, power):
         self.grid_power = int(power)
@@ -45,11 +50,17 @@ class SGDisplay:
     def update_display(self):
         while self.update is True:
             print("Display aktualisiert")
-            self._display()
+            try:
+                self._display()
+            except DeviceNotFoundError:
+                print("Connection problem with the display")
+                raise
             sleep(5)
 
-
     def _display(self):
+        """
+        This method displays the status information
+        """
         font2 = ImageFont.truetype('LiberationMono-Regular.ttf', 14)
 
         with canvas(self.device) as draw:
@@ -77,5 +88,3 @@ class SGDisplay:
                 draw.text((0, 50), f"SG-Status: {self.sg_status : >3}  ", font=font2, fill="white")
             else:
                 draw.text((0, 50), f"SG-Status:  n.a.", font=font2, fill="white")
-
-    

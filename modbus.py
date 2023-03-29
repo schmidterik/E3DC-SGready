@@ -28,7 +28,11 @@ class E3DC:
         :return: photovoltaic
         """
         result = self.c.read_holding_registers(40067, reg_nb=2)
-        return _combine16bit(result)
+        try:
+            return _combine16bit(result)
+        except TypeError:
+            print("Data could not be retrieved from E3DC")
+            raise
 
     def get_battery_power(self):
         """
@@ -36,7 +40,11 @@ class E3DC:
         :return: battery power in Watt
         """
         result = self.c.read_holding_registers(40069, reg_nb=2)
-        return _combine16bit(result)
+        try:
+            return _combine16bit(result)
+        except TypeError:
+            print("Data could not be retrieved from E3DC")
+            raise
 
     def get_house_consumption(self):
         """
@@ -44,7 +52,11 @@ class E3DC:
         :return: house consumption in Watt
         """
         result = self.c.read_holding_registers(40071, reg_nb=2)
-        return _combine16bit(result)
+        try:
+            return _combine16bit(result)
+        except TypeError:
+            print("Data could not be retrieved from E3DC")
+            raise
 
     def get_grid_transfer_power(self):
         """
@@ -52,7 +64,11 @@ class E3DC:
         :return: Power at grid transfer point in Watt
         """
         result = self.c.read_holding_registers(40073, reg_nb=2)
-        return _combine16bit(result)
+        try:
+            return _combine16bit(result)
+        except TypeError:
+            print("Data could not be retrieved from E3DC")
+            raise
 
     def get_additional_feeders_power(self):
         """
@@ -60,7 +76,11 @@ class E3DC:
         :return: Power of all additional feeders in Watt
         """
         result = self.c.read_holding_registers(40075, reg_nb=2)
-        return _combine16bit(result)
+        try:
+            return _combine16bit(result)
+        except TypeError:
+            print("Data could not be retrieved from E3DC")
+            raise
 
     def get_wallbox_power(self):
         """
@@ -68,7 +88,11 @@ class E3DC:
         :return:
         """
         result = self.c.read_holding_registers(40077, reg_nb=2)
-        return _combine16bit(result)
+        try:
+            return _combine16bit(result)
+        except TypeError:
+            print("Data could not be retrieved from E3DC")
+            raise
 
     def get_wallbox_solarpower(self):
         """
@@ -76,7 +100,11 @@ class E3DC:
         :return:
         """
         result = self.c.read_holding_registers(40079, reg_nb=2)
-        return _combine16bit(result)
+        try:
+            return _combine16bit(result)
+        except TypeError:
+            print("Data could not be retrieved from E3DC")
+            raise
 
     def get_autarky(self):
         """
@@ -84,7 +112,11 @@ class E3DC:
         :return: autarky in percent
         """
         result = self.c.read_holding_registers(40081, reg_nb=1)
-        return result[0] >> 8
+        try:
+            return result[0] >> 8
+        except TypeError:
+            print("Data could not be retrieved from E3DC")
+            raise
 
     def get_self_consumption(self):
         """
@@ -92,7 +124,11 @@ class E3DC:
         :return: self-consumption in percent
         """
         result = self.c.read_holding_registers(40081, reg_nb=1)
-        return result[0] & 0x00FF
+        try:
+            return result[0] & 0x00FF
+        except TypeError:
+            print("Data could not be retrieved from E3DC")
+            raise
 
     def get_battery_soc(self):
         """
@@ -100,7 +136,11 @@ class E3DC:
         :return:
         """
         result = self.c.read_holding_registers(40082, reg_nb=1)
-        return result[0]
+        try:
+            return result[0]
+        except TypeError:
+            print("Data could not be retrieved from E3DC")
+            raise
 
 if __name__ == "__main__":
     e3dc = E3DC()

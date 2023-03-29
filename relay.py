@@ -23,11 +23,15 @@ class SGRelay:
         GPIO.setup(23, GPIO.OUT)
         GPIO.setup(24, GPIO.OUT)
 
-        # turn off all relays
+        # turn off all relays (relays are low active)
         chan_list = (22,23,24,27)
         GPIO.output(chan_list, True)
 
     def set_SG_status(self, status):
+        """
+        This method switches the relays according to the new SG Ready status.
+        :param status: sg ready status
+        """
         if status == 1:
             # Betriebszustand: Sperrung
             self.SG_relay1_ON()
@@ -37,13 +41,14 @@ class SGRelay:
             self.SG_relay1_OFF()
             self.SG_relay2_OFF()
         elif status == 3:
-            # Betriebszustand: Verstärkter Betrieb
+            # Betriebszustand: Verstärkter Betrieb für 2h
             self.SG_relay1_OFF()
             self.SG_relay2_ON()
         elif status == 4:
             # Betriebszustand: Anlauf
             self.SG_relay1_ON()
             self.SG_relay2_ON()
+        self.sg_status = status
 
     def get_SG_status(self) -> int:
         return self.sg_status
@@ -81,4 +86,4 @@ class SGRelay:
         GPIO.output(self.SG_relay2_pin, False)
 
     def cleanup(self):
-        GPIO.clenup()
+        GPIO.cleanup()
